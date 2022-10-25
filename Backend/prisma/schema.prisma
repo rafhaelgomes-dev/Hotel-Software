@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://admin:admin@localhost:5434"
+}
+
+model tb_hotel{
+  id Int @id @default(autoincrement())
+  status Boolean @default(false)
+  nome String
+  cnpj String
+  pais String
+  estado String
+  cidade String
+  reservas tb_reservas[]
+}
+
+model tb_reservas{
+  numeroreserva Int @id @default(autoincrement())
+  idhotel Int
+  hotel tb_hotel @relation(fields: [idhotel], references: [id])
+  apartamento Int
+  datacheckin String
+  datacheckout String
+  status Boolean
+  hospedes tb_hospedes[]
+}
+
+model tb_hospedes{
+  idhospede Int @id @default(autoincrement())
+  idReserva Int
+  reserva tb_reservas @relation(fields: [idReserva], references: [numeroreserva])
+  nome String
+  sobrenome String
+}
